@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <!-- jstl -> each -->
+    <div id="app">
+        <ul>
+            <!-- 변수 in Vue data 안의 정보 :  in , of 둘다 되는데 in을 많이 쓴다 -->
+            <!-- 이클립스의 for..each 랑 얘랑 같다 (아마도?) -->
+            <li v-for="item in myArray">
+                {{item}}
+            </li>
+        </ul>
+        <ul>
+            <li v-for="item in objArray">
+                {{item.name}}
+                {{item.price}}
+            </li>
+        </ul>
+
+        <ul>
+            <li v-for="n in 10">
+                {{n}} x 5 = {{n*5}}
+            </li>
+        </ul>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myArray: ['짬뽕', '간짜장', '탕수육'],
+                objArray: [
+                    { name: '짬뽕', price: 6000 },
+                    { name: '간짜장', price: 6000 },
+                    { name: '탕수육', price: 13000 }
+                ]
+            }
+        })
+    </script>
+</body>
+
+</html>
