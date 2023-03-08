@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <!-- 1. Mustache 표기법(콧수염 표기법) -->
+    <!-- {{ }} -->
+
+    <div id="app">
+        <!-- <p>{{myText}}</p> -->
+        <!-- 2. v-text 방식 -->
+        <p v-text="myText"></p>     <!-- innerText 랑 비슷함. 전부 문자로 인식. -->
+        <p v-html="myText"></p>     <!-- innerHTML 랑 비슷함. 태그는 태그로 인식. -->
+        <!-- 디렉티브  v-text, v-html, v-on ... -->
+        <button v-on:click="changeText">변경</button>   <!-- 이 버튼을 클릭하면 첫번째 myText 는 innerText 처럼, 두번째 myText 는 innerHTML 처럼 인식. (Line 37 참고)-->
+    </div>
+
+
+    <!-- 얘는 아이디가 app 인 div 태그를 벗어났기 때문에, Vue 인스턴스 사용 안 됨. 그냥 문자 출력 -->
+    <p>{{myText}}</p>
+
+
+    <script>
+        // app 이란 아이디를 가진 녀석에게 Vue 를 붙여서 쓰겠다는 거임
+        // 근데 app 이란 아이디를 가진 <div> 태그를 벗어나면, 못 쓴다.
+        new Vue({
+            el: '#app',
+            data: {
+                myText : ' Hello!!'
+            },
+            methods: {
+                changeText: function() {
+                    this.myText = `<button type="button">추가</button>`
+                }
+            }
+        })
+    </script>
+</body>
+</html>

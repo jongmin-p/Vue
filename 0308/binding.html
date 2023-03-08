@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+        .strike-through {
+            text-decoration: line-through;
+            color: blueviolet;
+        }
+
+        .dark {
+            background-color: gold;
+        }
+    </style>
+</head>
+<body>
+    <!-- 이번에는 태그의 속성에다가 접근해서 데이터를 넣어보자 -->
+    <div id="app">
+        <!-- img 태그 -->
+        <img src="MVC.PNG">
+        <br>
+
+        <!-- 각 태그의 속성에 접근할 때 사용 -->
+        <img v-bind:src="fileName">v-bind로 지정
+        <br>
+        <br>
+        
+        <!-- a 태그 -->
+        <a href="https://www.naver.com/">직접 링크 지정</a>
+        <a v-bind:href="myURL">링크를 v-bind로 지정</a>
+
+        <!-- align -->
+        <p align="right">우측 정렬 직접 저장</p>
+        <p v-bind:align="myAlign">우측정렬을 v-bind로 지정</p>
+
+        <!-- 인라인 스타일 지정 -->
+        <p style="color: #E80">문자색 직접 지정</p>
+        <p v-bind:style="{color: myColor}">문자색 직접 지정</p>
+
+        <p style="font-size:200%">글자 크기 직접 지정</p>
+                <!-- 하이픈(-) 신 카멜 표기법 fontSize -->
+        <p v-bind:style="{fontSize: mySize}">글자크기를 v-bind 로 지정</p>
+
+        <!-- 배경색 변경 -->
+        <p style="background-color: aqua;">배경색 직접 지정</p>
+        <p v-bind:style="{backgroundColor: myBackColor}">
+            배경색을 v-bind로 직접 지정
+        </p>
+
+
+
+        <!-- 이제 클래스 지정해서 꾸며주자 (css) -->
+        <p class="strike-through">직접 클래스 지정</p>
+        <p v-bind:class="myClass">v-bind 로 클래스 지정</p>
+        <p v-bind:class="[myClass, darkClass]">v-bind 로 하나 이상의 클래스 지정</p>
+        <p v-bind:class="{'strike-through':isON}">데이터로 클래스 ON/OFF (토글)</p>
+
+
+        <button type="button" v-on:click="changeClass">변경 (토글 버튼)</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                fileName: 'MVC2.PNG',
+                myURL: 'https://github.com/',
+                myAlign: 'right',
+                myColor: 'red',
+                mySize: '200%',
+                myBackColor: 'green',
+
+                // 클래스 지정 파트
+                myClass: 'strike-through',
+                darkClass: 'dark',
+                isON: true  // 토글버튼 기본값을 true 로
+            },
+            methods: {      // 토글 버튼 구현
+                changeClass: function() {
+                    if (this.isON) {
+                        this.isON = false;
+                    } else {
+                        this.isON = true;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+        img {
+            width: 30%;
+            height: 30%;
+        }
+    </style>
+</head>
+<body>
+    <!-- 이번에는 반대로, 태그 안에 있는 데이터를 <script> 태그로 가져오는 걸 해보자. -->
+    <div id="app">
+        <!-- 내가 입력한 데이터를 script 로 가져감. -->
+        <input type="text" v-model="myName" placeholder="이름">
+        <p>나는 {{myName}} 입니다.</p>
+        <br>
+
+
+        <textarea v-model="myText"></textarea>
+        <p>문장 : {{myText}} </p>
+        <p>문자수 : {{myText.length}}</p>
+
+
+        <label>
+            <input type="checkbox" v-model="myCheck">
+            체크박스의 상태 : {{myCheck}}
+        </label><br><br><br>
+
+        
+        <!-- 체크박스 여러 개 사용 -->
+        <label>
+            <input type="checkbox" v-model="myChecks" value="red">
+            빨간색
+        </label><br>
+        <label>
+            <input type="checkbox" v-model="myChecks" value="green">
+            초록색
+        </label><br>
+        <label>
+            <input type="checkbox" v-model="myChecks" value="blue">
+            파랑색
+        </label><br>
+        
+        선택한 색 : {{myChecks}}
+        <br><br><br>
+
+
+        <!-- 버튼 비활성화 기능(disabled) -->
+        <label>
+            <input type="checkbox" v-model="myAgree">
+            동의합니다.
+        </label>                           <!-- 위의 체크박스가, 체크가 안 돼있으면 false 이니까, 버튼을 사용하지 않겠다 -->
+        <button type="button" v-bind:disabled="!myAgree">송신</button>
+        <br><br><br>
+
+
+        <!-- 라디오 버튼 이용해보자 -->
+        <label>
+            <input type="radio" value="red" v-model="picked">
+            빨간색
+        </label><br>
+        <label>
+            <input type="radio" value="green" v-model="picked">
+            초록색
+        </label><br>
+        <label>
+            <input type="radio" value="yellow" v-model="picked">
+            노랑색
+        </label><br>
+
+        선택한 값 : {{picked}}
+        <br><br><br>
+
+        
+        <!-- 라디오 버튼을 이용한 이미지 변경 -->
+        <label>
+            <input type="radio" value="testImg.jpg" v-model="fileName">
+            강아지
+        </label>
+        <label>
+            <input type="radio" value="testImg2.jpg" v-model="fileName">
+            고양이
+        </label>
+
+        <div>
+            <!-- 위의 라디오버튼 중 하나를 클릭하면, value 값(이미지)을 아래의 <script> 의 fileName 으로 가져감. -->
+            <!-- 그리고 script 의 fileName 으로 가져간 그걸 여기서 다시 불러서 출력함 -->
+            <img v-bind:src="fileName">
+        </div>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myName: '',
+                myText: '오늘 날씨가 따뜻',
+                myCheck: false,
+
+                myChecks: [],       // myChecks 는 체크박스가 여러 개니까 배열로
+
+                myAgree: false,     // 기본값을 false (체크박스에 체크 안 돼 있음)
+
+                picked: 'red',      // 디폴트 값을 red 로 설정
+
+                fileName: ''        // 라디오 버튼인 <label> 에서 value 를 받아오면,  받아온 값을 <img v-bind:src="fileName"> 에서 다시 가져가서 출력함.
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <label>
+            <input type="checkbox" v-model="myVisible">표시
+        </label>
+        <!-- checkbox 가 true 이면 "체크박스 ON" 출력, false 이면 출력 안 됨 -->
+        <p v-if="myVisible">체크박스 ON</p>
+        <p v-else>체크박스 OFF</p>
+
+        <button v-if="isShow" @click="good">좋아</button>
+        <br><hr><br>
+
+        <!-- 어떤 조건일 때, '하위 태그들을 모두 적용' 시키고 싶을 때 -->
+            <!-- input 태그에다가 A 입력시 아래 두 태그가 나옴 -->
+        <template v-if="type=='A'">
+            <h1>template titles</h1>
+            <p>template p tag</p>
+        </template>
+        <template v-else>
+            <h1>else template titles</h1>
+            <p>else template p tag</p>
+        </template>
+
+
+        <!--------------------------------------------------->
+
+
+        <!-- 특정 조건일 때 '단일값' 만 쓸거다 -->
+        <p v-if="type=='A'">A</p>
+        <p v-else-if="type=='B'">B</p>
+        <p v-else-if="type=='C'">C</p>
+        <p v-else>{{type + abcde}}</p>
+        <input v-model="type">
+        <br><hr><br>
+
+
+        <!--------------------------------------------------->
+
+        
+        <!-- if문을 show 라는 애로 바꿔보자 -->
+            <!-- if 문 안에 내용이 많다면, show 를 쓰는게 좋고, 내용이 많지 않다면 if문을 써도 됨 -->
+            <!-- 이유는 왠지 모르겠다. -->
+        <p v-show="myVisible">쇼박스 ON</p>
+        <p v-if="myVisible">IF 박스 ON</p>
+        <p v-else>체크박스 OFF</p>
+
+
+        <!--------------------------------------------------->
+
+        
+        <script>
+            new Vue({
+                el: '#app',
+                data: {
+                    myVisible: false,
+                    isShow: true,  // 일단 true. (보여주자),
+                    type: ''
+                },
+
+                methods: {
+                    // @click="good" 이라는 버튼을 누르면.. 버튼을 지움.
+                    good: function() {
+                        this.isShow = false
+                    }
+                }
+            })
+        </script>
+    </div>
+</body>
+</html>

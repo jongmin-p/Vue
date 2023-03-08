@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>입력폼 활용</h1>
+        <label>
+            <!-- lazy 이기 때문에,  입력한 다음 엔터 눌러야 값이 바뀜? 출력됨? -->
+            이름 : <input v-model.lazy="myName">
+        </label>
+        <br>
+
+        좋아하는 색은 : <br>
+        <input type="radio" v-model="myColor" value="red"> 빨강<br>
+        <input type="radio" v-model="myColor" value="green"> 녹색<br>
+        <input type="radio" v-model="myColor" value="blue"> 파랑<br>
+        <input type="radio" v-model="myColor" value="yellow"> 노랑<br>
+        <input type="radio" v-model="myColor" value="gray"> 회색<br><br>
+
+
+        내 이름은 {{myName}} 이고, 좋아하는 색은 {{myColor}} 입니다.
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myName: '',
+                myColor: ''
+            }
+        })
+    </script>
+</body>
+</html>

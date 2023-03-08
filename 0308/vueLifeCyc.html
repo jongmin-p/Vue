@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>
+            {{hello}}
+        </p>
+        <button type="button" @click="changeValue">변경</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',     // =>  '아이디가 app 인 곳에다가 Vue 를 마운트 시킨다~'' 라는 뜻
+            data: {
+                hello: "hello Vue.js"
+            },
+
+            // Vue Life Cycle 순서에 따라서 생성되는 과정  -> console.log() 로 찍어보자.
+            // 1.
+            beforeCreate: function() {
+                console.log('beforeCreate')
+            },
+            // 2.
+            created: function() {
+                console.log('created')
+            },
+            // 3.   웹사이트 시작하면, 자동적으로 여기까지 출력됨 (즉, 생성 및 준비 단계???)
+            mounted: function() {
+                console.log('mounted')
+                this.hello = 'update vue'
+            },
+            // 4.   버튼 클릭 시, 이제 여기서부터 출력됨.
+                    // 만약.   el: '#app'  을 주석처리하면,  버튼 클릭해도 이후 작업 출력 안 됨. (생성까지만 한 거임)
+            beforeUpdate: function() {
+                console.log('beforeupdate')
+            },
+            // 5.
+            updated: function() {
+                console.log('updated')
+            },
+
+
+            methods: {
+                changeValue() {
+                    this.hello = 'update Test'
+                }
+            }
+        })
+    </script>
+</body>
+</html>

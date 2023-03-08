@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <!-- lazy, number, trim -->
+    <div id="app">
+        <!-- 1. lazy -->
+
+        <!-- 데이터를 다 입력하고나서 바뀌고 싶으면 lazy 사용 -->
+        <input v-model.lazy="myText">
+        <p>입력 후 표시 {{myText}}</p>
+
+        <!-- lazy 사용 안하면 실시간으로 바뀜 -->
+        <input v-model="myText2">
+        <p>입력 후 표시 {{myText2}}</p>
+        <hr>
+
+        <!---------------------------------------------->
+
+        <!-- 2. number -->
+        <input v-model.number="myNumber" type="number">
+        <p>100 을 더해서 표시 {{100 + myNumber}}</p>
+        <hr>
+
+        <!---------------------------------------------->
+
+        <!-- 3. trim -->
+        <input v-model.trim="myText3">
+        <p>앞뒤 공백 제거 : {{myText3}}</p>
+        <hr>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myText: '',
+                myText2: '',
+
+                myNumber: 0,
+
+                myText3: ''
+            }
+        })
+    </script>
+</body>
+</html>

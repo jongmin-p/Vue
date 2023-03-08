@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+    <style>
+        /* 나중에 선언한 css 가 최종 적용됨 (즉 덮어씌기) */
+
+        .text {
+            color: blue;
+        }
+
+        .strike-through {
+            text-decoration: line-through;
+        }
+
+        img {
+            width: 30%;
+            height: 30%;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <p>
+            <a v-bind:href="myURL">네이버로 연결</a>
+        </p>
+
+        <p>
+            <img v-bind:src="imgName">강아지 표기
+        </p>
+
+        <p v-bind:align="alignLeft">텍스트 왼쪽 정렬</p>
+        <p v-bind:align="alignRight">텍스트 오른쪽 정렬</p>
+        <p v-bind:align="alignCenter">텍스트 가운데 정렬</p>
+        
+        <p v-bind:style="{color: myColor}">인라인 스타일 글자색 빨간색</p>
+        <p v-bind:style="{fontSize: mySize}">인라인 스타일 글자크기 150% 크게</p>
+        <p v-bind:style="{fontSize: mySize222, color: myColor222, backgroundColor: myBackColor222}">인라인 스타일로 글자크기 150%, 글자 빨간색, 배경 노랑색</p>
+        
+        <p v-bind:class="myClass">blue 지정</p>
+        <!-- 나중에 선언한 css 가 최종 적용됨 (즉 덮어씌기) -->
+        <p v-bind:class="[myClass, mySecondClass]">blue, strike through 지정</p>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                myURL: 'https://www.naver.com/',
+                imgName: 'testImg.jpg',
+
+                alignLeft: 'left',
+                alignRight: 'right',
+                alignCenter: 'center',
+
+                myColor: 'red',
+                mySize: '150%',
+
+                mySize222: '150%',
+                myColor222: 'red',
+                myBackColor222: 'yellow',
+
+                // 클래스명을 여기서 동적으로 설정 가능.
+                    // 즉, 지금 실제 클래스명은 text, strike-through 
+                myClass: 'text',
+                mySecondClass: 'strike-through'
+            }
+        })
+    </script>
+</body>
+</html>
