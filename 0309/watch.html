@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <!-- watch : 데이터의 변화를 감지 -->
+    <div id="app">
+        <p>금지 문자는 {{forbiddenText}}</p>
+        <textarea v-model="inputText"></textarea>
+        <br><br>
+
+        <p>앞으로 {{restSec}}</p>
+        <button v-on:click="startTimer">START</button>
+    </div>
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                forbiddenText: '안돼',
+                inputText: '오늘도 날씨가 좋습니다.',
+                restSec: 10,
+                timerObj: null
+            },
+
+            // setInterval : 타이머를 맞춰줌.
+            // clearInterval 는 setInterval 이 작동하고나서, 실행하게 됨.
+            methods: {
+                startTimer: function() {
+                    clearInterval(this.timerObj)
+                    this.restSec = 10;
+                    this.timerObj = setInterval(() => {
+                        this.restSec--;
+                    }, 1000);
+                }
+            },
+
+            // 감시 -> watch
+            watch: {
+                restSec: function() {
+                    if(this.restSec <= 0) {
+                        alert('제한 시간입니다.')
+                        clearInterval(this.timerObj)
+                    }
+                },
+
+                inputText: function() {
+                    // 입력된 값에 금지된 값이 들어가있는지 확인하기 위해 indexOf()
+                    var pos = this.inputText.indexOf(this.forbiddenText);
+                    
+                    // 금지된 단어가 들어오면,
+                    if(pos >= 0) {
+                        alert(this.forbiddenText + " 는 입력할 수 없습니다.")
+                        this.inputText = this.inputText.substr(0, pos);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[if - for 문 예제]  숫자 배열 조작 및 구구단</title>
+  <!-- Vue -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+<style>
+  ul {
+    list-style: none;
+  }
+</style>
+
+</head>
+
+<body>
+  <h2>현석이 버전</h2>
+  <div id="app">
+    <template v-for="item in dansuArray">
+      {{item}}
+
+      <button @click="change(item)">변경</button>
+      <button @click="del(item)">삭제</button>
+      <br>
+    </template>
+
+    <button @click="add">추가</button>
+    <button @click="align">정렬</button>
+    <button @click="gugudan">구구단보이기</button>
+
+    <p v-for="n in 9" v-if="myVisible">
+      {{nowdan}} * {{n}} = {{nowdan*n}}
+    </p>
+  </div>
+
+  <script>
+    let dansu = [2, 4, 6, 8, 10];
+
+    new Vue({
+      el: '#app',
+      data: {
+        dansuArray: dansu,
+        nowdan: dansu[0],
+        myVisible: false
+      },
+      
+      methods: {
+        add: function () {
+          this.nowdan++;
+        },
+        
+        align: function () {
+
+        },
+        
+        change: function (item) {
+          this.nowdan = item;
+        },
+        
+        del: function () {
+          this.nowdan = 0;
+        },
+        
+        gugudan: function () {
+          this.myVisible == true ? this.myVisible = false : this.myVisible = true;
+        }
+      }
+    })
+  </script>
+  <br><br><hr><br><br>
+
+
+  <h2>교수님 버전</h2>
+
+  <div id="app2">
+    <ul>
+      <li v-for="item in dansuArray">
+        {{item}}
+
+        <button @click="change(item)">변경</button>
+        <button @click="del(item)">삭제</button>
+        <br>
+      </li>
+    </ul>
+
+    <button @click="add">추가</button>
+    <button @click="align">정렬</button>
+    <button @click="gugudan">구구단보이기</button>
+
+    <p v-for="item in 9" v-if="Visible" v-bind="no"> <!-- Vue data 변수명 no 를 쓸거다 -->
+      {{no}} * {{item}} = {{no*item}}
+    </p>
+  </div>
+
+  <script>
+    let dansuAry = [2, 4, 6, 8, 10];
+    new Vue({
+      el: '#app2',
+      data: {
+        no: 0, // 단수를 따로 저장할 변수
+        Visible: false, // 구구단을 보이거나 숨기기 위해 사용
+        dansuArray: dansuAry // 나타낼 단수 배열
+      },
+      
+      methods: {
+        add: function () {
+          this.no++; // 단수 증가 
+        },
+        
+        align: function () {
+
+        },
+        
+        change: function (item) {
+          this.no = item; // 단수 하나만 뽑아내야하니 해당 단수 값을 넣어줌
+        },
+        
+        del: function (item) {
+          // 구구단 단수 초기화
+          // this.no = 0;
+
+          // 구구단 해당 단수 삭제하기
+          this.dansuArray = this.dansuArray.filter(function (val) {
+            // 건내온 item 값 val을 제외하고 새로운 dansuArray 가 생긴다
+            return item != val;
+          })
+        },
+        
+        gugudan: function () {
+          // 삼항 연산자 : false면 true로 true면 false로 바꿔주는 구문
+          return this.Visible == true ? this.Visible = false : this.Visible = true;
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

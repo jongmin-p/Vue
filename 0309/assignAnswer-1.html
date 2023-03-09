@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제한 시간 내에 문자 입력하기 - 구글 답지</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <h2>제한 시간내에 문자 입력하기</h2>
+
+    <div id="app">
+        <p>
+            금지문자(,로 나누어 복수입력가능)
+            <input type="" v-model="proHibit" @keyup.enter="inputProHibit">
+        </p>
+
+        <p>
+            제한시간을 입력하세요(초)
+            <input v-model.number="timerProhibit" id="timerProhibit" type="number">
+            <button @click="startBtn">시작</button>
+        </p>
+
+        <p>
+            남은시간 ({{restSec}}초) <br>
+            <textarea cols="10" rows="10" style="width: 500px;" v-model="inputText" :disabled="isText"></textarea>
+        </p>
+
+        <div v-if="isResult">
+            <p>{{resultTextCount}} 개의 문자를 입력하였습니다.</p>
+            <p>벌점: {{resultScore}} (금지 문자 1개당 벌점 12점)</p>
+        </div>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: "#app",
+            data: {
+                restSec: 0,
+                timerObject: null,
+                resultTextCount: 0,
+                proHibit: "",
+                timerProhibit: 0,
+                isText: true,
+                isResult: false,
+                inputText: '',
+                prohibitCount: 0
+            },
+
+            methods: {
+                startBtn() {
+                    if (this.timerProhibit <= 0) {
+                        alert("제한 시간을 입력하세요!");
+                        document.getElementById("timerProhibit").focus();
+                    } else {
+                        this.isText = false;
+                        this.startTimer();
+                    }
+                },
+
+                startTimer() {
+                    this.restSec = this.timerProhibit;
+                    this.timerObject = setInterval(() => {
+                        console.log(this.restSec + "초");
+                        this.restSec--;
+                    }, 1000);
+                }
+            },
+
+            computed: {
+                resultScore() {
+                    return this.prohibitCount * 12;
+                }
+            },
+
+            watch: {
+                // 입력한 문자열을 감시한다.
+                inputText() {
+                    const arrayData = this.proHibit.split(",");
+                    for (let i = 0; i < arrayData.length; i++) {
+                        let pos = this.inputText.indexOf(arrayData[i]);
+                        if (pos > -1) {
+                            alert(arrayData[i] + " 는 입력할 수 없습니다.");
+                            this.inputText = this.inputText.substr(0, pos);
+                            this.restSec += 10;
+                            this.prohibitCount++;
+                        }
+                    }
+                },
+
+                // 남은 초를 감시한다.
+                restSec() {
+                    if (this.restSec <= 0) {
+                        alert("제한시간 입니다.");
+                        clearInterval(this.timerObject);
+                        this.resultTextCount = this.inputText.length;
+                        this.isText = true;
+                        this.isResult = true;
+                    }
+                }
+            },
+        });      
+    </script>
+</body>
+
+</html>

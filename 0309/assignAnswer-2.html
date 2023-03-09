@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제한 시간 내에 문자 입력하기 - 교수님 ver.</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1>제한 시간내에 문자 입력하기</h1>
+        <label>
+            금지문자(,로 나누어 복수입력가능)
+            <input type="text" v-model="forbiddenText" v-bind:disabled="!isWritable">
+        </label>
+        <br>
+
+        <label>
+            제한시간을 입력하세요(초)
+            <input type="text" v-model.number="setTime" v-bind:disabled="!isWritable">
+            <button @click="start" v-bind:disabled="!isWritable">시작</button>
+        </label>
+
+        <p>남은시간 ({{limitTime}}초)</p>
+                                                <!-- 얘는 반대니까 느낌표 제외 -->
+        <textarea v-model="inputText" v-bind:disabled="isWritable"></textarea>
+        <p>{{wordCnt}}개의 문자를 입력.</p>
+        <p>벌점 : {{resultScore}} (금지문자 1개당 12점)</p>
+    </div>
+
+    
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                forbiddenText: '',      // 금지 문자
+                isWritable: true,
+                limitTime: 0,
+                setTime: 0,
+                inputText: '',
+                timerObj: null,
+                wordCnt: 0,             // 입력하는 글자 몇 개
+                forbiddenCnt: 0
+            },
+
+            methods: {
+                start: function() {
+                    // 애를 false로 해야, 비활성화됨?
+                    this.isWritable = false;
+                    this.limitTime = this.setTime;
+
+                    // 여기서 this는  Vue 자신 그 자체 (본인 자신) 를 vueObj 에 넣어줌.
+                    const vueObj = this;
+                    // 시작하게 되면, 타이머 동작함
+                    this.timerObj = setInterval(function() {
+                        vueObj.limitTime--;
+                    }, 1000)
+                }
+            },
+
+            watch: {
+                limitTime: function() {
+                    // 제한시간이 다 되면
+                    if(this.limitTime <= 0) {
+                        alert('제한시간에 도달했습니다.')
+                        clearInterval(this.timerObj)   // 다 되면, 타이머 멈추게
+                        this.isWritable = true;         // 다시 비활성? 활성? 으로 바꿈
+                        this.wordCnt = this.inputText.length;
+                    }
+                },
+
+                inputText: function() {
+                    let dataList = this.forbiddenText.split(',');
+
+                    for(let i = 0; i < dataList.length; i++) {
+                        let keyword = dataList[i];
+                        let pos = this.inputText.indexOf(keyword);
+
+                        if (pos > -1) {
+                            alert(this.forbiddenText + '는 입력할 수 없습니다.');
+                            this.forbiddenCnt++;
+                            this.inputText = this.inputText.substr(0, pos);
+                            this.limitTime += 10;           // 벌점 맞았으니 10초 더 추가
+                        }
+                    }
+                }
+            },
+
+            computed: {
+                // 벌점 계산
+                resultScore: function() {
+                    return this.forbiddenCnt * 12;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
