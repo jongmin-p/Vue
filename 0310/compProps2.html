@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-component my-name="또치"></my-component>
+        <my-component my-name="희동"></my-component>
+        <my-component></my-component>
+        <hr>
+    </div>
+
+    <script>
+        const MyComponent = {
+            template: `<p>나는 {{myName}} 입니다.</p>`,
+            // props: ['~~~']      이것도 되고, 아래 방식도 됨.
+            props: {
+                myName: String
+            },
+
+            // created 는 Vue 인스턴스 생성 후 실행됨
+            created: function() {
+                if(this.myName == null) {
+                    this.myName = '마이콜'
+                }
+            }
+        }
+
+        new Vue({
+            el: '#app',
+            // component 아니고 끝에 s 붙이자
+            components: {
+                'my-component': MyComponent
+            }
+        })
+    </script>
+
+
+    <!-- v-for 사용 (반복문) -->
+    <div id="app2">
+        <my-component v-for="(item, index) in myArray" :my-name="item"></my-component>
+    </div>
+
+    <script>
+        let MyComponent222 = {
+            template: `<p>나는 {{myName}} 입니다.</p>`,
+            props: {
+                myName: String
+            },
+
+            created: function() {
+                if(this.myName == null) {
+                    this.myName = '도우너';
+                }
+            }
+        }
+
+
+        new Vue({
+            el: '#app2',
+            data: {
+                myArray: ['피카츄', '파이리', '꼬북이']
+            },
+
+            components: {
+                'my-component': MyComponent222
+            }
+        })
+    </script>
+</body>
+</html>

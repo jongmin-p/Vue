@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <h1>todo 리스트 - 지금까지 한 것들 복습해보는 예제</h1>
+
+    <div id="app">
+        <!-- 여기다가 해야 할 일들 추가??? (반복문 돌림) -->
+        <div v-for="todo in todos">
+            <label>
+                <!-- checkbox 클릭했냐 안했냐에 따라 true, false 로 바뀜 (이게 기본으로 탑재된 기능인 듯) -->
+                <input type="checkbox" v-model="todo.done">
+                <span :class="{donestyle:todo.done}">
+                    {{todo.text}}
+                </span>
+            </label>
+        </div>
+
+                                    <!-- 엔터키가 올라갈 때, 해당 내영을 실행 (그냥 lazy 써도 됨) -->
+        <input type="text" v-model:trim="addText" v-on:keyup.enter="addToDo" placeholder="할 일 작성">
+
+        <p>
+            <button @click="cleanToDo">처리완료 삭제</button>
+        </p>
+
+        <!-- remaining -> 할 일 몇 개 처리헀는지?,  todos.length -> 객체의 개수(?) -->
+        <p>{{remaining}} / {{todos.length}}</p>
+    </div>
+
+
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                // todos 에는 배열 형태로 들어감.
+                todos: [
+                    //  done: false 이면 아직 할 일을 하지 않은 것.  (true 로 바뀌면 한 걸로 바뀜)
+                    // checkbox 를 클릭하면 done 이 true 로 바뀌는데, 그 뜻은 할 일을 했다는 뜻
+                    {done: false, text: '빵 사기'},
+                    {done: false, text: '커피 사기'},
+                    {done: false, text: '노트 사기'}
+                ],
+
+                addText: '',
+            },
+
+
+            // 할 일 몇 개 처리했는지   '계산하기 위함' 이니까 computed
+                // done 이 true 바뀌면, computed 가 다시 계산함.
+            computed: {
+                remaining: function() {
+                    return this.todos.filter(function (val) {
+                        // val.done 이 true 인 애들만 가지고 와서, '새로운 배열' 만듦 (filter 함수)
+                        return val.done;
+                    }).length;
+                }
+            },
+
+
+            methods: {
+                addToDo: function() {
+                    if(this.addText) {
+                        // 배열에 추가 .push()
+                        this.todos.push({done: false, text: this.addText});
+                        this.addText = '';
+                    }
+                },
+
+                cleanToDo: function() {
+                    this.todos = this.todos.filter(function(val) {
+                        // 아직 할 일을 끝마치지 못한 애들만(false 인 애들만) 가지고 와서 새로운 배열 만들고, 그걸 화면에 출력함.
+                        // 즉, 체크가 된 애들은(true 인 애들은) 삭제
+                        return val.done == false;
+
+                        // 반대로, 내가 할 일을 끝낸 애들만 보고싶다면  return val.don == true;   하면 됨.
+                    })
+                }
+            }
+        })
+    </script>
+
+
+    <style>
+        .donestyle {
+            text-decoration: line-through;
+            color: crimson;
+        }
+    </style>
+</body>
+</html>

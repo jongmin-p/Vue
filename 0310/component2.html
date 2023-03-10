@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <my-component></my-component>
+        <local-component></local-component>
+    </div>
+
+
+    <div id="app2">
+        <my-component></my-component>
+        <local-component></local-component>   <!-- 얘는 여전히 출력 안 됨 -->
+        <instance-component></instance-component>
+    </div>
+
+
+    <script>
+        // var : 전역변수,  let : 지역변수
+
+        // 1. 전역 컴퍼넌트 먼저 만들어보자
+        // 1-1. 전역 컴포넌트 선언
+            // 전역컴포넌트는 앞으로 생성될 모든 vue 인스턴스에서 사용할 수 있는 컴포넌트
+        Vue.component('my-component', {
+            template: `<div>안녕, 전역 컴포넌트</div>`
+        })
+
+        // 2-1. 지역 컴포넌트 선언
+            // 개별 vue 인스턴스에서 사용할 수 있는 컴포넌트
+                // -> 즉, 내가 vue 생성(new Vue) 할 때 컴포넌트 등록해야 사용 가능함.
+        const component = {
+            template: `<div>안녕, 지역 컴포넌트</div>`
+        }
+
+
+        // Vue 생성  (전역/지역 컴포넌트 공통)
+        new Vue({
+            el: '#app',
+
+            // 이건 지역 컴포넌트를 위한 것 (컴포넌트 등록?)
+            components: {
+                // local-component (HTML) == localComponent (JS)  / 똑같이 인식함.
+                'localComponent': component
+            }
+        })
+
+
+        new Vue({
+            el: '#app2',
+            components: {
+                // html 에서 사용할 컴포넌트 이름    { 컴포넌트 내용 }
+                'instance-component': {
+
+                    template: `<div style="border: 1px solid black;">
+                    <span>
+                        <h3>
+                            인스턴스로 등록한 컴포넌트
+                            </h3>
+                            </span>
+                            </div>`
+                }
+            }
+        })
+    </script>
+</body>
+</html>

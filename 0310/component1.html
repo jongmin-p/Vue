@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <h1>컴포넌트를 만들어서 표시하는 예제</h1>
+    
+    <div id="app">
+        <!-- 컴포넌트를 만들게 되면, 이곳에 등록이 된다 -->
+        <my-component></my-component>
+        <my-component></my-component>
+    </div>
+
+
+    <script>
+        /*
+            HTML 은 대소문자 구분을 안해서,
+            카멜 표기법 말고, 케밥 표기법 -> 단어 가운데다가 하이픈(-) 넣는거
+            JS에서는 myComponent,  HTML 에서는 my-component   => 같음
+        */
+
+        // 컴포넌트 생성
+            // -> 재사용성이 좋다.    <my-component></my-component> 태그 여러 개 있어도 다 같이 적용됨
+            // -> 렌더링 시간이 줄어든다.
+        const MyComponent = {
+            template: `<p class='my-comp'>카운터
+                            <button @click='addOne'>추가</button>
+                            {{count}}
+                        </p>
+            `,
+            
+            data: function() {
+                return {
+                    // 변수: 값
+                    count: 0
+                }
+            },
+
+
+            methods: {
+                addOne: function() {
+                    this.count++;
+                }
+            }
+        }
+
+
+        new Vue({
+            el: '#app',
+            components: {
+                'my-component': MyComponent
+            }
+        })
+    </script>
+
+
+    <style>
+        .my-comp {
+            width: 300px;
+            padding: 5px;
+            background-color: rgb(255, 255, 171);
+            border: solid 2px darkorange;
+            border-radius: 8px;
+        }
+    </style>
+</body>
+</html>
