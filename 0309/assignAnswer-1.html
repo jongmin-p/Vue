@@ -1,111 +1,112 @@
 <!DOCTYPE html>
-<html lang="ko">
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제한 시간 내에 문자 입력하기 - 구글 답지</title>
+    <title>제한 시간 내에 문자 입력하기 - 교수님 ver.</title>
     <!-- Vue -->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
-
 <body>
-    <h2>제한 시간내에 문자 입력하기</h2>
-
     <div id="app">
-        <p>
-            금지문자(,로 나누어 복수입력가능)
-            <input type="" v-model="proHibit" @keyup.enter="inputProHibit">
-        </p>
+        <h1>제한 시간내에 문자 입력하기</h1>
+        <label>
+            금지문자(,로 나누어 복수입력가능)            <!-- v-bind 는 생략도 가능함.   :disabled 라고 해도 됨. -->
+                                                        <!-- isWritable  -> 활성화할건지 비활성화할건지 -->
+            <input type="text" v-model="forbiddenText" v-bind:disabled="!isWritable">
+        </label>
+        <br>
 
-        <p>
-            제한시간을 입력하세요(초)
-            <input v-model.number="timerProhibit" id="timerProhibit" type="number">
-            <button @click="startBtn">시작</button>
-        </p>
+        <label>
+            제한시간을 입력하세요(초)                   <!-- v-bind 는 생략도 가능함.   :disabled 라고 해도 됨. -->
+            <input type="text" v-model.number="setTime" v-bind:disabled="!isWritable">
+            <button @click="start" v-bind:disabled="!isWritable">시작</button>
+        </label>
 
-        <p>
-            남은시간 ({{restSec}}초) <br>
-            <textarea cols="10" rows="10" style="width: 500px;" v-model="inputText" :disabled="isText"></textarea>
-        </p>
-
-        <div v-if="isResult">
-            <p>{{resultTextCount}} 개의 문자를 입력하였습니다.</p>
-            <p>벌점: {{resultScore}} (금지 문자 1개당 벌점 12점)</p>
-        </div>
+        <p>남은시간 ({{limitTime}}초)</p>
+                                                <!-- 얘는 반대니까 느낌표 제외 -->
+        <textarea v-model="inputText" v-bind:disabled="isWritable"></textarea>
+        <p>{{wordCnt}}개의 문자를 입력.</p>
+        <p>벌점 : {{resultScore}} (금지문자 1개당 12점)</p>
     </div>
 
 
     <script>
         new Vue({
-            el: "#app",
+            el: '#app',
             data: {
-                restSec: 0,
-                timerObject: null,
-                resultTextCount: 0,
-                proHibit: "",
-                timerProhibit: 0,
-                isText: true,
-                isResult: false,
+                forbiddenText: '',      // 금지 문자
+                isWritable: true,
+                limitTime: 0,
+                setTime: 0,
                 inputText: '',
-                prohibitCount: 0
+                timerObj: null,
+                wordCnt: 0,             // 입력하는 글자 몇 개
+                forbiddenCnt: 0
             },
 
+            // 가장 먼저 methods 가 실행됨(?)
             methods: {
-                startBtn() {
-                    if (this.timerProhibit <= 0) {
-                        alert("제한 시간을 입력하세요!");
-                        document.getElementById("timerProhibit").focus();
-                    } else {
-                        this.isText = false;
-                        this.startTimer();
+                start: function() {
+                    // 애를 false로 해야, 비활성화됨?
+                    this.isWritable = false;
+                    this.limitTime = this.setTime;
+
+                    // 여기서 this는  Vue 자신 그 자체 (new Vue  자신) 를 vueObj 에 넣어줌.
+                    const vueObj = this;
+                    // console.log(this)    // 여기서 this 는 객체 안의 this 이기 때문에 new Vue 를 의미
+                    // 시작하게 되면, 타이머 동작함
+                    this.timerObj = setInterval(function() {
+                        // this.limitTime--;  // 만약 여기서 this 를 사용하면,
+                                              // 여기서 말하는 this 는 new Vue 가 아니라, 그냥 window 를 가리킴. (즉, limitTime 이 작동 안 함)
+                                                    // 왜 작동 안 함???  -> setInterval() 은 window 이기 때문!
+                                                                        // 근데 window 안에는, limitTime 이란 게 없다. (우리가 new Vue 객체 안에 만듦 - 아래 watch{ } 참고..?)
+                                                // 즉, this 가 어느 위치에서 사용되는지에 따라 객체인지, window 인지 다름. (console.log(this) 로 확인 가능)
+                        vueObj.limitTime--;
+                    }, 1000)            // 1000ms => 1초
+                }
+            },
+
+            // watch -> 감시
+            watch: {
+                limitTime: function() {
+                    // 제한시간이 다 되면
+                    if(this.limitTime <= 0) {
+                        alert('제한시간에 도달했습니다.')
+                        clearInterval(this.timerObj)   // 다 되면, 타이머 멈추게
+                        this.isWritable = true;         // 다시 비활성? 활성? 으로 바꿈
+                        this.wordCnt = this.inputText.length;
                     }
                 },
 
-                startTimer() {
-                    this.restSec = this.timerProhibit;
-                    this.timerObject = setInterval(() => {
-                        console.log(this.restSec + "초");
-                        this.restSec--;
-                    }, 1000);
-                }
-            },
+                inputText: function() {
+                    let dataList = this.forbiddenText.split(',');
 
-            computed: {
-                resultScore() {
-                    return this.prohibitCount * 12;
-                }
-            },
+                    for(let i = 0; i < dataList.length; i++) {
+                        let keyword = dataList[i];
+                        let pos = this.inputText.indexOf(keyword);      // 금지어가 나타난 위치
 
-            watch: {
-                // 입력한 문자열을 감시한다.
-                inputText() {
-                    const arrayData = this.proHibit.split(",");
-                    for (let i = 0; i < arrayData.length; i++) {
-                        let pos = this.inputText.indexOf(arrayData[i]);
+                        // 금지어가 입력됐다면..  (indexOf()에 존재하지 않으면 -1 이 뜨는데,  존재하면 -1보다 크니까???)
                         if (pos > -1) {
-                            alert(arrayData[i] + " 는 입력할 수 없습니다.");
+                            alert(this.forbiddenText + '는 입력할 수 없습니다.');
+                            this.forbiddenCnt++;
                             this.inputText = this.inputText.substr(0, pos);
-                            this.restSec += 10;
-                            this.prohibitCount++;
+                            this.limitTime += 10;           // 벌점 맞았으니 10초 더 추가
                         }
                     }
-                },
-
-                // 남은 초를 감시한다.
-                restSec() {
-                    if (this.restSec <= 0) {
-                        alert("제한시간 입니다.");
-                        clearInterval(this.timerObject);
-                        this.resultTextCount = this.inputText.length;
-                        this.isText = true;
-                        this.isResult = true;
-                    }
                 }
             },
-        });      
+
+            // computed -> 데이터에 변화가 있으면....
+                // 마지막으로..  제한 시간이 다 지나고나면 아래 computed 가 실행됨
+            computed: {
+                // 벌점 계산
+                resultScore: function() {
+                    return this.forbiddenCnt * 12;
+                }
+            }
+        })
     </script>
 </body>
-
 </html>
