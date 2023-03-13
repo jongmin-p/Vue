@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>comp Sync 해보자</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{count}}</p>
+    <!-- 부모에서 쓰는 버튼 ( 함수 )-->
+    <button @click="countUp">증가</button>
+
+    <!-- 자식 comp 생성해서 부모의 data와 이어주기 ( sync는 동기화시키는거 )
+          자식이 부모의 data를 건들 수 있게 됨
+          양방향으로 주고 받아야할때는 sync를 통해 사용하는 것이 좋다 -->
+    <cnt-comp :my-count.sync="count"></cnt-comp>
+  </div>
+  <script>
+    const cntComp = {
+      template:
+        `
+          <div>
+            <p>{{myCount}}</p>
+            <button @click="myCountUp">자식 증가</button>
+          </div>
+        `,
+      props: ['myCount'],
+      methods: {
+        myCountUp: function () {
+          // 이벤트가 실행될때 동기화 시킨 부모의 값을 올린다
+          this.myCount++;
+          // 버튼 누를때마다 부모가 가지고 있는 값을올려줌
+          // 부모가 갖고 있는 count를 업데이트 시킨다
+          // myCount를 update를 하는데 this.myCount로 할거다
+          this.$emit('update:myCount', this.myCount);
+          console.log('자식 myCountUp', this.myCount)
+        }
+      }
+    }
+
+    new Vue({
+      el: '#app',
+      data: {
+        count: 0
+      },
+      methods: {
+        countUp: function () {
+          // 부모버튼을 누르면 올라간다 .
+          this.count++;
+          console.log('부모 countUp', this.count)
+        }
+      },
+      components: {
+        'cnt-comp': cntComp
+      }
+    })
+  </script>
+</body>
+
+</html>

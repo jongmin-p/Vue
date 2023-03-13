@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>board 예제</title>
+  <!-- Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- Jquery CDN -->
+  <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <script>
+    // 자바스크립트 (fetch)
+    fetch('board.json') // data 가져올 주소 , 경로
+      .then((res) => (res.json())) // 가져온 값을 json 형식으로 바꿔줌
+      .then((data) => {
+        console.log("자바스크립트");
+        console.log(data);
+        let findData = data['board'][0];
+        console.log(findData['no'],
+          findData['title'],
+          findData['content'],
+          findData['view']);
+        console.log("===========");
+      })
+      .catch((err) => console.log(err))
+
+
+    // Jquery
+    $.ajax({
+      url: 'board.json',
+      success: function (data) {
+        console.log("제이쿼리");
+        console.log(data);
+        let findData = data['board'][0];
+        console.log(findData['no'],
+          findData['title'],
+          findData['content'],
+          findData['view']);
+        console.log("===========");
+      }, error: function (rej) {
+        console.log(rej);
+      }
+    })
+  </script>
+</body>
+</html>
