@@ -17,13 +17,20 @@
         .dark {
             background-color: gold;
         }
+
+        img {
+            width: 20%;
+            height: 20%;
+            border: 3px solid green;
+        }
     </style>
 </head>
+
 <body>
     <!-- 이번에는 태그의 속성에다가 접근해서 데이터를 넣어보자 -->
     <div id="app">
         <!-- img 태그 -->
-        <img src="MVC.PNG">
+        <img src="img/kakao111.png">
         <br>
 
         <!-- 각 태그의 속성에 접근할 때 사용 -->
@@ -69,7 +76,7 @@
         new Vue({
             el: '#app',
             data: {
-                fileName: 'MVC2.PNG',
+                fileName: 'img/kakao222.png',
                 myURL: 'https://github.com/',
                 myAlign: 'right',
                 myColor: 'red',

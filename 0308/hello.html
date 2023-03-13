@@ -13,12 +13,10 @@
     <!-- {{ }} -->
 
     <div id="app">
-        <!-- <p>{{myText}}</p> -->
+        <p>{{myText}}</p>           <!-- 기본값은 전부 innerText 인듯 -->
         <!-- 2. v-text 방식 -->
         <p v-text="myText"></p>     <!-- innerText 랑 비슷함. 전부 문자로 인식. -->
         <p v-html="myText"></p>     <!-- innerHTML 랑 비슷함. 태그는 태그로 인식. -->
-        <!-- 디렉티브  v-text, v-html, v-on ... -->
-        <button v-on:click="changeText">변경</button>   <!-- 이 버튼을 클릭하면 첫번째 myText 는 innerText 처럼, 두번째 myText 는 innerHTML 처럼 인식. (Line 37 참고)-->
     </div>
 
 
@@ -32,12 +30,7 @@
         new Vue({
             el: '#app',
             data: {
-                myText : ' Hello!!'
-            },
-            methods: {
-                changeText: function() {
-                    this.myText = `<button type="button">추가</button>`
-                }
+                myText : '<h1>Hello!</h1>'
             }
         })
     </script>
