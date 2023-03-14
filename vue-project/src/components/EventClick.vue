@@ -1,0 +1,20 @@
+<template>
+  <div>
+    <button @click="increaseCounter">add</button>
+    <p>The Counter is : {{ counter }}</p>
+  </div>
+</template>
+<script>
+export default {
+  data () {
+    return {
+      counter: 0
+    }
+  },
+  methods: {
+    increaseCounter () {
+      this.counter++
+    }
+  }
+}
+</script>
